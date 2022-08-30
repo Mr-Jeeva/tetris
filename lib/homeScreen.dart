@@ -41,6 +41,8 @@ class _HomeState extends State<Home> {
   Timer? _timer;
   List<int> ocupiedPos = [];
 
+  int pos = 0, randInt = 0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -123,7 +125,8 @@ class _HomeState extends State<Home> {
 
   startGame() {
     bool hasReachFloor = false, canGo = true;
-    currentBrick.addAll(bricks[Random().nextInt(4)][0]!);
+    randInt = Random().nextInt(4);
+    currentBrick.addAll(bricks[randInt][pos]!);
     _timer = Timer.periodic(
       const Duration(milliseconds: 300),
       (Timer timer) {
@@ -150,7 +153,7 @@ class _HomeState extends State<Home> {
               });
         } else {
           if (hasReachFloor == false && canGo == true) {
-            for (int i = 0; i < currentBrick.length; i++) {
+            for (int i = 0; i < bricks[randInt].length; i++) {
               for (int element in currentBrick) {
                 if (element > 190) {
                   hasReachFloor = true;
@@ -161,7 +164,11 @@ class _HomeState extends State<Home> {
                   break;
                 }
               }
-              currentBrick[i] = currentBrick[i] + 10;
+              // currentBrick[i] = currentBrick[i] + 10;
+              print("");
+              for(int val in bricks[randInt][i]!) {
+                //bricks[randInt][i] todo stopped here
+              }
             }
           } else {
             ocupiedPos.addAll(currentBrick);
@@ -205,7 +212,9 @@ class _HomeState extends State<Home> {
   }
 
   void rotate() {
-    currentBrick = [];
+    /* currentBrick.clear();
+    currentBrick.addAll(bricks[randInt][pos++]!);
+    setState(() {});*/
   }
 }
 
