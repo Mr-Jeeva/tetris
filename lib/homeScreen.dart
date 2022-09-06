@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
               child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 10, childAspectRatio: 1.1),
+                      crossAxisCount: 10, childAspectRatio: 1.8),
                   itemCount: 200,
                   itemBuilder: (context, index) {
                     return Container(
@@ -164,12 +164,10 @@ class _HomeState extends State<Home> {
                   break;
                 }
               }
-              // currentBrick[i] = currentBrick[i] + 10;
-              print("");
-              for(int val in bricks[randInt][i]!) {
-                //bricks[randInt][i] todo stopped here
-              }
+               currentBrick[i] = currentBrick[i] + 10;
             }
+            print("");
+
           } else {
             ocupiedPos.addAll(currentBrick);
             currentBrick.clear();
