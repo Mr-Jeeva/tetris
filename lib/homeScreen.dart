@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
               child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 10, childAspectRatio: 1.8),
+                      crossAxisCount: 10, childAspectRatio: 1.1),
                   itemCount: 200,
                   itemBuilder: (context, index) {
                     return Container(
@@ -60,7 +60,9 @@ class _HomeState extends State<Home> {
                 ElevatedButton(
                     onPressed: () {
                       String leftBrick = currentBrick[0].toString();
-                      if (leftBrick.substring(leftBrick.length - 1, leftBrick.length) != "1") {
+                      if (leftBrick.substring(
+                              leftBrick.length - 1, leftBrick.length) !=
+                          "1") {
                         changeBrickValue('left');
 
                         currentBrick.clear();
@@ -71,7 +73,9 @@ class _HomeState extends State<Home> {
                 ElevatedButton(
                     onPressed: () {
                       String leftBrick = currentBrick[3].toString();
-                      if (leftBrick.substring(leftBrick.length - 1, leftBrick.length) != "0") {
+                      if (leftBrick.substring(
+                              leftBrick.length - 1, leftBrick.length) !=
+                          "0") {
                         changeBrickValue('right');
 
                         currentBrick.clear();
@@ -105,8 +109,9 @@ class _HomeState extends State<Home> {
     bricks = getDefaultBricks();
     currentBrick.addAll(getDefaultBricks()[randInt][pos]!);
     _timer = Timer.periodic(
-      const Duration(milliseconds: 300),
+      const Duration(milliseconds: 500),
       (Timer timer) {
+        checkClearRow();
         if (isGameOver()) {
           _timer!.cancel();
           showDialog(
@@ -130,20 +135,6 @@ class _HomeState extends State<Home> {
               });
         } else {
           if (hasReachFloor == false && canGo == true) {
-            /*for (int i = 0; i < bricks[randInt].length; i++) {
-              for (int element in currentBrick) {
-                if (element > 190) {
-                  hasReachFloor = true;
-                  break;
-                }
-                if (ocupiedPos.contains(element + 10)) {
-                  canGo = false;
-                  break;
-                }
-              }
-              currentBrick[i] = currentBrick[i] + 10;
-            }*/
-
             if (currentBrick[0] > 190 ||
                 currentBrick[1] > 190 ||
                 currentBrick[2] > 190 ||
@@ -211,7 +202,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  static List<Map<int, List<int>>> getDefaultBricks() {
+  static getDefaultBricks() {
     return [
       {
         0: [5, 6, 15, 16],
@@ -324,5 +315,25 @@ class _HomeState extends State<Home> {
         : type == 'left'
             ? (bricks[randInt][3]![3] - 1)
             : (bricks[randInt][3]![3] + 1);
+  }
+
+  checkClearRow() {
+    ocupiedPos.sort();
+    for (int i = 1; i <= 20; i++) {
+      if (checkRow((i * 10) - 9, i * 10)) {
+        ocupiedPos.removeRange(ocupiedPos.indexOf((i * 10) - 9), ocupiedPos.indexOf(i * 10));
+        print('true');
+      }
+    }
+    print("");
+  }
+
+  checkRow(int a, int b) {
+    List<bool> rowOccupied = [];
+    rowOccupied.clear();
+    for (int i = a; i < b; i++) {
+      rowOccupied.add(ocupiedPos.contains(i));
+    }
+    return !rowOccupied.contains(false);
   }
 }
