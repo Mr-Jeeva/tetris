@@ -7,7 +7,6 @@ class GridModel {
 
   GridModel({required this.occupied, required this.color, required this.id});
 
-
   setColor(Color col) {
     this.color = col;
   }

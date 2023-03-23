@@ -3,14 +3,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class Tetris extends StatefulWidget {
+  const Tetris({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Tetris> createState() => _TetrisState();
 }
 
-class _HomeState extends State<Home> {
+class _TetrisState extends State<Tetris> {
   List<Map<int, List<int>>> bricks = getDefaultBricks();
 
   List<int> currentBrick = [];
@@ -60,11 +60,10 @@ class _HomeState extends State<Home> {
                 ElevatedButton(
                     onPressed: () {
                       String leftBrick = currentBrick[0].toString();
-                      if (leftBrick.substring(
-                              leftBrick.length - 1, leftBrick.length) !=
-                          "1") {
-                        changeBrickValue('left');
-
+                      if (leftBrick.substring(leftBrick.length - 1, leftBrick.length) != "1") {
+                        if(!(bricks[randInt][pos]!.any((element) => ocupiedPos.contains(element - 1)))) {
+                          brickDown("left");
+                        }
                         currentBrick.clear();
                         currentBrick.addAll(bricks[randInt][pos]!);
                       }
@@ -73,11 +72,10 @@ class _HomeState extends State<Home> {
                 ElevatedButton(
                     onPressed: () {
                       String leftBrick = currentBrick[3].toString();
-                      if (leftBrick.substring(
-                              leftBrick.length - 1, leftBrick.length) !=
-                          "0") {
-                        changeBrickValue('right');
-
+                      if (leftBrick.substring(leftBrick.length - 1, leftBrick.length) != "0") {
+                        if(!(bricks[randInt][pos]!.any((element) => ocupiedPos.contains(element + 1)))) {
+                          brickDown("right");
+                        }
                         currentBrick.clear();
                         currentBrick.addAll(bricks[randInt][pos]!);
                       }
@@ -85,7 +83,10 @@ class _HomeState extends State<Home> {
                     child: const Text('Right')),
                 ElevatedButton(
                     onPressed: () {
+                    int val = pos;
+                    if(!(bricks[randInt][ val < 3 ? val + 1 : val = 0]!.any((element) => ocupiedPos.contains(element)))) {
                       rotate();
+                     }
                     },
                     child: const Text('Rotate')),
                 ElevatedButton(
@@ -149,10 +150,10 @@ class _HomeState extends State<Home> {
               canGo = false;
               return;
             }
-            changeBrickValue('down');
+            brickDown("down");
+            //changeBrickValue('down');
             currentBrick.clear();
             currentBrick.addAll(bricks[randInt][pos]!);
-            print("");
           } else {
             ocupiedPos.addAll(currentBrick);
             currentBrick.clear();
@@ -231,90 +232,18 @@ class _HomeState extends State<Home> {
     ];
   }
 
-  changeBrickValue(String type) {
-    bricks[randInt][0]![0] = type == 'down'
-        ? (bricks[randInt][0]![0] + 10)
-        : type == 'left'
-            ? (bricks[randInt][0]![0] - 1)
-            : (bricks[randInt][0]![0] + 1);
-    bricks[randInt][0]![1] = type == 'down'
-        ? (bricks[randInt][0]![1] + 10)
-        : type == 'left'
-            ? (bricks[randInt][0]![1] - 1)
-            : (bricks[randInt][0]![1] + 1);
-    bricks[randInt][0]![2] = type == 'down'
-        ? (bricks[randInt][0]![2] + 10)
-        : type == 'left'
-            ? (bricks[randInt][0]![2] - 1)
-            : (bricks[randInt][0]![2] + 1);
-    bricks[randInt][0]![3] = type == 'down'
-        ? (bricks[randInt][0]![3] + 10)
-        : type == 'left'
-            ? (bricks[randInt][0]![3] - 1)
-            : (bricks[randInt][0]![3] + 1);
-
-    bricks[randInt][1]![0] = type == 'down'
-        ? (bricks[randInt][1]![0] + 10)
-        : type == 'left'
-            ? (bricks[randInt][1]![0] - 1)
-            : (bricks[randInt][1]![0] + 1);
-    bricks[randInt][1]![1] = type == 'down'
-        ? (bricks[randInt][1]![1] + 10)
-        : type == 'left'
-            ? (bricks[randInt][1]![1] - 1)
-            : (bricks[randInt][1]![1] + 1);
-    bricks[randInt][1]![2] = type == 'down'
-        ? (bricks[randInt][1]![2] + 10)
-        : type == 'left'
-            ? (bricks[randInt][1]![2] - 1)
-            : (bricks[randInt][1]![2] + 1);
-    bricks[randInt][1]![3] = type == 'down'
-        ? (bricks[randInt][1]![3] + 10)
-        : type == 'left'
-            ? (bricks[randInt][1]![3] - 1)
-            : (bricks[randInt][1]![3] + 1);
-
-    bricks[randInt][2]![0] = type == 'down'
-        ? (bricks[randInt][2]![0] + 10)
-        : type == 'left'
-            ? (bricks[randInt][2]![0] - 1)
-            : (bricks[randInt][2]![0] + 1);
-    bricks[randInt][2]![1] = type == 'down'
-        ? (bricks[randInt][2]![1] + 10)
-        : type == 'left'
-            ? (bricks[randInt][2]![1] - 1)
-            : (bricks[randInt][2]![1] + 1);
-    bricks[randInt][2]![2] = type == 'down'
-        ? (bricks[randInt][2]![2] + 10)
-        : type == 'left'
-            ? (bricks[randInt][2]![2] - 1)
-            : (bricks[randInt][2]![2] + 1);
-    bricks[randInt][2]![3] = type == 'down'
-        ? (bricks[randInt][2]![3] + 10)
-        : type == 'left'
-            ? (bricks[randInt][2]![3] - 1)
-            : (bricks[randInt][2]![3] + 1);
-
-    bricks[randInt][3]![0] = type == 'down'
-        ? (bricks[randInt][3]![0] + 10)
-        : type == 'left'
-            ? (bricks[randInt][3]![0] - 1)
-            : (bricks[randInt][3]![0] + 1);
-    bricks[randInt][3]![1] = type == 'down'
-        ? (bricks[randInt][3]![1] + 10)
-        : type == 'left'
-            ? (bricks[randInt][3]![1] - 1)
-            : (bricks[randInt][3]![1] + 1);
-    bricks[randInt][3]![2] = type == 'down'
-        ? (bricks[randInt][3]![2] + 10)
-        : type == 'left'
-            ? (bricks[randInt][3]![2] - 1)
-            : (bricks[randInt][3]![2] + 1);
-    bricks[randInt][3]![3] = type == 'down'
-        ? (bricks[randInt][3]![3] + 10)
-        : type == 'left'
-            ? (bricks[randInt][3]![3] - 1)
-            : (bricks[randInt][3]![3] + 1);
+  brickDown(type) {
+    for(int i = 0; i <= 3 ; i++) {
+      for(int j = 0; j <= 3; j++) {
+        if(type == "down") {
+          bricks[randInt][i]![j] = bricks[randInt][i]![j] + 10;
+        } else if(type == "left") {
+            bricks[randInt][i]![j] = bricks[randInt][i]![j] - 1;
+        } else if(type == "right") {
+          bricks[randInt][i]![j] = bricks[randInt][i]![j] + 1;
+        }
+      }
+    }
   }
 
   checkClearRow() {
@@ -322,18 +251,22 @@ class _HomeState extends State<Home> {
     for (int i = 1; i <= 20; i++) {
       if (checkRow((i * 10) - 9, i * 10)) {
         ocupiedPos.removeRange(ocupiedPos.indexOf((i * 10) - 9), ocupiedPos.indexOf(i * 10));
-        print('true');
+        ocupiedPos.forEach((element) {
+          if(element < i*10) {
+            ocupiedPos[ocupiedPos.indexOf(element)] = element + 10;
+          }
+        });
       }
     }
-    print("");
   }
 
   checkRow(int a, int b) {
     List<bool> rowOccupied = [];
     rowOccupied.clear();
-    for (int i = a; i < b; i++) {
+    for (int i = a; i <= b; i++) {
       rowOccupied.add(ocupiedPos.contains(i));
     }
     return !rowOccupied.contains(false);
   }
+
 }

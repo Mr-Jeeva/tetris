@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'homeScreen.dart';
+import 'tetris.dart';
 
 void main() {
   runApp(const AppTheme());
 }
 
 class AppTheme extends StatelessWidget {
-
 
   const AppTheme({Key? key}) : super(key: key);
 
@@ -19,9 +18,10 @@ class AppTheme extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Colors.black,
           fontFamily: GoogleFonts.poppins().fontFamily),
-      home: const Home()
+      home: const Tetris()
     );
   }
+
 }
 
 
