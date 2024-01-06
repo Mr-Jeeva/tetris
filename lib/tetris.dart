@@ -110,13 +110,11 @@ class _TetrisState extends State<Tetris> {
     bricks = getDefaultBricks();
     currentBrick.addAll(getDefaultBricks()[randInt][pos]!);
     _timer = Timer.periodic(
-      const Duration(milliseconds: 500),
-      (Timer timer) {
+      const Duration(milliseconds: 500), (Timer timer) {
         checkClearRow();
         if (isGameOver()) {
           _timer!.cancel();
-          showDialog(
-              context: context,
+          showDialog(context: context,
               builder: (c) {
                 return AlertDialog(
                   title: const Text('Game Over'),
@@ -196,11 +194,32 @@ class _TetrisState extends State<Tetris> {
   }
 
   rotate() {
-    if (pos < 3) {
-      pos++;
+    int tempPos = pos;
+
+    if (tempPos < 3) {
+      tempPos++;
     } else {
-      pos = 0;
+      tempPos = 0;
     }
+    String zeroBrick = bricks[randInt][tempPos]![0].toString();
+    String firstBrick = bricks[randInt][tempPos]![1].toString();
+    String secondBrick = bricks[randInt][tempPos]![2].toString();
+    String thirdBrick = bricks[randInt][tempPos]![3].toString();
+
+    if(zeroBrick.substring(zeroBrick.length - 1, zeroBrick.length) != "1" &&
+        zeroBrick.substring(zeroBrick.length - 1, zeroBrick.length) != "0" &&
+
+        firstBrick.substring(firstBrick.length - 1, firstBrick.length) != "1" &&
+        firstBrick.substring(firstBrick.length - 1, firstBrick.length) != "0" &&
+
+        secondBrick.substring(secondBrick.length - 1, secondBrick.length) != "1" &&
+        secondBrick.substring(secondBrick.length - 1, secondBrick.length) != "0" &&
+
+        thirdBrick.substring(thirdBrick.length - 1, thirdBrick.length) != "1" &&
+        thirdBrick.substring(thirdBrick.length - 1, thirdBrick.length) != "0") {
+      pos = tempPos;
+    }
+
   }
 
   static getDefaultBricks() {
@@ -251,6 +270,7 @@ class _TetrisState extends State<Tetris> {
     for (int i = 1; i <= 20; i++) {
       if (checkRow((i * 10) - 9, i * 10)) {
         ocupiedPos.removeRange(ocupiedPos.indexOf((i * 10) - 9), ocupiedPos.indexOf(i * 10));
+        ocupiedPos.removeAt(ocupiedPos.indexOf(i * 10));
         ocupiedPos.forEach((element) {
           if(element < i*10) {
             ocupiedPos[ocupiedPos.indexOf(element)] = element + 10;
